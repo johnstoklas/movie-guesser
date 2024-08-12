@@ -1,1 +1,1 @@
-# movie_guesser
+A multiplayer game using node.js which involves two players who must guess the chronological orders of the movies they are given. The first one to get 10 in a row wins.
