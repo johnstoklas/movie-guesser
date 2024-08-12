@@ -1,6 +1,0 @@
-- make sure username can't be the same
-- if player disconnects before game is over then game is forfeited
-- when the game is over give the players the option to leave the current game
-	- assigning game room might not be a good way to do it because what if one game ends and there are people in game two, then there will be 3 people in game two - better way to do it would be to loop through all the players in the game and get a count for what players are in what room, if there is a room with only one player add them to that one otherwise start a new game, also need to make sure that if someone were to leave and someone joined at the same time the person who joined is not thrown into an existing game, to do that I can just have a variable called gameStarted and if that variable is false then a player can join the game
-
-- need to hook everything up to Heroku afterwards
