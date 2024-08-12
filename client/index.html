@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Guesser</title>
+    <!--<link rel="stylesheet" href="style.css">-->
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
+<body onload="load()" id="outside" style="background-color:lightslategray">
+    <div id="main-menu" class="pop-up-background">
+        <div class="main-menu-content">
+            <div class="main-menu-title">
+                <h1 style="color:black"> Movie Guesser </h1>
+            </div>
+            <div class="main-menu-buttons">
+                <div class="main-menu-text" id="join-game"> Join Game </div>
+                <div class="main-menu-text" id="how-to-play"> How to Play</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-instructions" class="pop-up-background">
+        <div class="main-menu-content">
+            <div id="close-how-to-play"> &#10005; </div>
+            <h1 style="color:black; margin: 10px;"> Instructions </h1>
+            <p class="pop-up-text" style="margin:10px; margin-top:20px"> Welcome to Movie Guesser. You must place 10 movies in the correct order, by release year, on your timeline. <br> <br> If two movies have been released in the same year, either side will be accepted as a correct answer. <br> <br> If you know the title of the movie, you can obtain steal tokens which can be used against your oppenent. If you believe they placed a movie in the wrong position, you can attempt to steal the movie from them by placing your steal token on their timeline.  </p>
+        </div>
+    </div>
+
+    <div id="username-sign-in" class="pop-up-background">
+        <div class="main-menu-content">
+            <div id='signDiv'>
+                <p class="pop-up-text username-sign-in-text" style="margin-bottom: 0;"> Please Enter a Username: </p>
+                <input id="signDiv-username" type="text" class="username-box" autocomplete="off"></input>
+                <button onclick="signIn(document.getElementById('signDiv-username').value)"> Submit </button>
+            </div>
+            <p id='invalid-username' style="color:red; margin: 0; margin-left: 100px; display: none;"> Invalid Username. Please Try Again. </p>
+        </div>
+    </div>
+
+    <div id="game">
+        <header>
+            <h1 style="margin-left:10px"> Movie Guesser </h1>
+        </header>
+            
+        <div id="movie-guess-div">
+            <div id="chat-form" style="margin-left: 200px;">
+                <div id="chat-text" style="width: 380px; height: 200px; overflow: auto; background-color: slategray;"> </div>
+            </div>
+            
+            <div id="movie-guess" class="movie-guess-screen"></div>
+            <!--
+            <div id="movie-guess-selector">
+                <select name="movie-guess-items" id="movie-guess-items">
+                    <option value="null"></option>
+                </select>
+                <input type="submit" value="Submit" id="submit-button" onclick="guessMovieTitle(document.getElementById('movie-guess-items').value)">
+            </div>
+            -->
+        </div>
+
+        <!--
+        
+        <div id="bonus-token-div">
+            <div id="bonus-token"> <p> STEAL </p>  </div>
+            <p id='steal-token-count'> x1 </p>
+        </div>
+        <div id="movie-guess-info" class="movie-guess-screen"></div>
+
+        -->
+
+        <div style="margin-top:60px; margin-left: 10px;">
+            <section id="timeline"></section>
+        </div>
+
+
+
+
+       
+    </div>
+    
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client/index.js"></script>
+
+</body>
+</html>

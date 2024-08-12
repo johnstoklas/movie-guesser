@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+* {
+    font-family: Lato;
+    color:white;
+}
+
+#movie-guess {
+    width: 380px;
+    height: 200px;
+    position: absolute;
+    left: 50%;
+    border: 2px solid white;
+}
+
+#movie-guess img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.button {
+    padding: 10px;
+    border: 1px solid black;
+    width: 200px;
+    text-align: center;
+    margin: 20px;
+    cursor: pointer;
+}
+
+.poster img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.poster {
+    width: 90px;
+    height: 140px;
+}
+
+.timeline-item > * {
+    display: inline-block;
+}
+
+#timeline > * {
+    display: inline-block;
+}
+
+#timeline {
+    text-align: center;
+}
+
+.select {
+    width: 0px;
+    height: 170px;
+    cursor: pointer;
+}
+
+.select:hover {
+    width: 90px;
+    height: 140px;
+    cursor: pointer;
+}
+
+.select:hover .poster-filler {
+    background-color: black;
+    width: 90px;
+    height: 140px;
+    color: white;
+    text-align: center;
+    font-size: 60px;
+    margin: 0;
+    padding: 0;
+}
+
+.poster-filler {
+    height: 160px;
+    width: 10px;
+    color: white;
+}
+
+.select p {
+    color: white;
+}
+
+.select:hover p {
+    color: black;
+}
+
+.pop-up-background {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.main-menu-text {
+    color: black;
+    font-size: 40px;
+    border: 2px solid black;
+    margin: 10px;
+    text-align: center;
+    padding: 10px;
+    width: 300px;
+    border-radius: 5px;
+}
+
+.main-menu-buttons {
+    margin-left: 130px;
+    position: relative;
+    top: 15%;
+}
+
+.main-menu-text:hover{
+    cursor: pointer;
+    background-color: rgb(237, 236, 236);
+}
+
+.main-menu-content {
+    background-color: white;
+    height: 400px;
+    width: 600px;
+    margin: 10% auto;
+    border-radius: 2%;
+}
+
+#game-instructions {
+    display: none;
+}
+#close-how-to-play {
+    color: red;
+    margin-left: 580px;
+}
+#close-how-to-play:hover {
+    cursor: pointer;
+    color: red;
+    margin-left: 580px;
+}
+
+.main-menu-title {
+    margin-left: 0px;
+    position: relative;
+    top: 10%;
+    font-size: 30px;
+    text-align: center;
+}
+
+#movie-guess-info {
+    position: fixed;
+    margin-top: -68px;
+    margin-left: 2px;
+    display: none;
+}
+
+.movie-guess-screen {
+    width: 380px;
+    height: 200px;
+    position: relative;
+    top: 12%;
+    left: 35%;
+    border: 2px solid black;
+}
+
+#bonus-token-div {
+    position: absolute;
+    top: 25%;
+    left: 80%;
+}
+
+#bonus-token-div > * {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#bonus-token {
+    border-radius: 60px;
+    border: 2px solid rgb(255, 232, 142);
+    height: 60px;
+    width: 60px;
+    text-align: center;
+    margin-right: 5px;
+    background-color:cornsilk;
+}
+
+#bonus-token > * {
+    margin-top: 20px;
+    color: rgb(255, 232, 142);
+}
+
+#movie-guess-selector {
+    margin-left: 442px;
+    margin-top: 5px;
+}
+
+#movie-guess-items {
+    width: 325px;
+    height: 22px;
+    margin-left: 5px;
+    color:black;
+}
+
+#submit-button {
+    color:black;
+    background-color: white;
+    border-color: slategray;
+}
+
+#movie-guess-items > * {
+    color:black;
+}
+
+#username-sign-in {
+    display: none;
+}
+
+.pop-up-text {
+    color:black;
+}
+
+#signDiv > * {
+    display: inline-block;
+    color:black;
+}
+
+#signDiv {
+    padding-top: 150px;
+    padding-left: 100px;
+}
+
+#movie-guess-div > * {
+    display: inline-block;
+}
+
+#chat-text > * {
+    font-size: 14px;
+    margin: 5px;
+}
+
+#opponent-timeline {
+    display: none;
+}
+
+.leave-button {
+    background-color: slategray;
+    border-color: white;
+}
+
+.leave-button:hover {
+    background-color: slategray;
+    border-color: white;
+    cursor: pointer;
+}
