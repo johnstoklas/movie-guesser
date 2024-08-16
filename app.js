@@ -153,7 +153,7 @@ Player.onDisconnect = function(socket) {
     let player = Player.list[socket.id];
     if(!player)
         return
-    if(player.gameStatus === true) {
+    if(player.gameStatus === true && playersOn%2 === 0) {
         for(var i in SOCKET_LIST) {
             opponent = Player.list[i];
             if(opponent.playerNum != player.playerNum && opponent.gameNum === player.gameNum) {
@@ -164,6 +164,7 @@ Player.onDisconnect = function(socket) {
                     opponent:opponent,
                 }
                 SOCKET_LIST[i].emit('addToChat', pack);
+                SOCKET_LIST[i].gameStatus = false;
             }
         }
     }

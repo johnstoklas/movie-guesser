@@ -1,5 +1,3 @@
-<script type='text/javascript' src='config.js'></script>
-
 var apiKey = config.apiKey;
 
 const movies = [];
@@ -112,6 +110,7 @@ function selectMovie() {
 
 function startingCard() {
     if(gameStarted== false) {
+        console.log(true);
         const tmp = Math.random()*movies.length;
         const rand = Math.floor(tmp);
 
@@ -148,15 +147,13 @@ function startingCard() {
 }
 
 function guessPos(date, index, inputOrder) {
-    if(guessedAlready == true) {
-        console.log("already guessed");
+    console.log(playerInfo.gameStatus)
+    if(guessedAlready === true) {
+        return;
     }
-    else if(gameWon == false && playerInfo.currentPlayerTurn === playerInfo.playerNum && playerInfo.gameStatus === true) {
-
-        //document.getElementById('movie-guess').style.display = "none";
-        //document.getElementById('movie-guess-info').style.display = "block";
-
+    else if(gameWon == false && playerInfo.currentPlayerTurn === playerInfo.playerNum && playerInfo.gameStatus == true) {
         var currentMovieYear = currentMovie[4];
+        console.log(currentMovieYear)
 
         const surroundMovie = document.getElementById(inputOrder);
         const timeline = document.getElementById('timeline');
@@ -165,6 +162,7 @@ function guessPos(date, index, inputOrder) {
 
         var childNodeNumber = Array.prototype.indexOf.call(timeline.children, surroundMovie);
         childNodeNumber++;
+
 
         var correct = null;
 
@@ -181,7 +179,7 @@ function guessPos(date, index, inputOrder) {
             }
         }
         if(currentMovieYear != 0) {
-            if(index == 1 && date >= currentMovieYear && (adjacentDate <= currentMovieYear || adjacentDate == null)) {
+            if(index == 1 && date >= currentMovieYear && (!adjacentDate || currentMovieYear <= adjacentDate)) {
                 timelineInputOrder++;
 
                 const newMovie = document.createElement("div");
@@ -205,7 +203,8 @@ function guessPos(date, index, inputOrder) {
                     </div>
                 `;
 
-                document.getElementById("timeline").insertBefore(newMovie, document.getElementById("timeline").childNodes[childNodeNumber]);
+                document.getElementById("timeline").insertBefore(newMovie, document.getElementById("timeline").childNodes[childNodeNumber-1]);
+                
                 sendChatInfo('correctPlacement', currentMovie);
                 if(timelineLength == 9) {
                     sendChatInfo('win');
@@ -215,7 +214,7 @@ function guessPos(date, index, inputOrder) {
                 guessedAlready = false;
                 correct = 'correctMovie';
             }
-            else if(index == 2 && date <= currentMovieYear && (adjacentDate >= currentMovieYear || adjacentDate == null)) {
+            else if(index == 2 && date <= currentMovieYear && (!adjacentDate|| adjacentDate <= currentMovieYear )) {
                 timelineInputOrder++;
 
                 const newMovie = document.createElement("div");
@@ -238,7 +237,8 @@ function guessPos(date, index, inputOrder) {
                         <p style="color:lightslategray"> ???? </p>
                     </div>
                 `;
-                document.getElementById("timeline").insertBefore(newMovie, document.getElementById("timeline").childNodes[childNodeNumber+1]);
+                document.getElementById("timeline").insertBefore(newMovie, document.getElementById("timeline").childNodes[childNodeNumber]);
+
                 sendChatInfo('correctPlacement', currentMovie);
                 if(timelineLength == 9) {
                     sendChatInfo('win');
@@ -333,11 +333,15 @@ function sendChatInfo(phase, movie, playerNum) {
 function displayServerInfo(data) {
     const chatBox = document.getElementById('chat-text');
     const chat = document.createElement('div');
-    var length = Number(data.player.timelineLength) + 1;
     if(!data.opponent) {
         chat.innerHTML = `Waiting for opponent to connect.`;
+        chatBox.appendChild(chat);
+        return;
     }
-    else if(data.phase === 'correctMovie') {
+    
+    var length = Number(data.player.timelineLength) + 1;
+    
+    if(data.phase === 'correctMovie') {
         chat.innerHTML = `<b>${data.player.username}</b> guessed the correct spot for <em>${data.movie[0]}</em>, ${data.movie[4]}. It is now <b>${data.opponent.username}'s</b> turn. <b>${data.player.username}'s</b> timeline is ${length} long.`;
     }
     else if(data.phase === 'notCorrectMovie') {
@@ -351,7 +355,7 @@ function displayServerInfo(data) {
     }
     else if(data.phase === 'disconnect') {
         chat.innerHTML = `<b>${data.player.username}</b> disconnected. You win the game. Press the button to play again: <button onclick="leaveGame()" class="leave-button"> Play Again </button>`;
-
+        gameWon = true;
     }
     chatBox.appendChild(chat);
 }
@@ -469,5 +473,8 @@ socket.on('signInStatus', function(status) {
 function leaveGame() {
     document.getElementById("main-menu").style.display = "block";
     socket.emit('removePlayer', playerInfo);
+    playerInfo = null;
     document.getElementById('chat-form').innerHTML = `<div id="chat-text" style="width: 380px; height: 200px; overflow: auto; background-color: slategray;"> </div>`;
+    document.getElementById('timeline').innerHTML = ``;
+    gameStarted = false;
 }
