@@ -2,6 +2,10 @@ var express = require('express');
 var app = express();
 var serv = require('http').Server(app);
 
+config = {
+    apiKey:"3f540891f7b254dd92eaaa54c0895843",
+}
+
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/client/index.html');
 });
