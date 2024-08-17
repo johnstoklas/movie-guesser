@@ -355,7 +355,6 @@ function displayServerInfo(data) {
     }
     else if(data.phase === 'disconnect') {
         chat.innerHTML = `<b>${data.player.username}</b> disconnected. You win the game. Press the button to play again: <button onclick="leaveGame()" class="leave-button"> Play Again </button>`;
-        gameWon = true;
     }
     chatBox.appendChild(chat);
 }
