@@ -83,7 +83,7 @@ Player.onConnect = function(username, socket) {
 
     socket.on('updatePlayerInfo', function(data) {
         player.currentPlayerTurn = data.currentTurn;
-        player.timelineLength = data.timelineLength+1; 
+        player.timelineLength = data.timelineLength; 
         if(player.timelineLength === 10) {
             player.gameStatus = false;
         }

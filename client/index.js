@@ -3,19 +3,13 @@ var apiKey = "3f540891f7b254dd92eaaa54c0895843";
 const movies = [];
 const moviesGuessList = [];
 var i = 0;
-var timelineInputOrder = 1;
-
+var timelineID = 1;
 var currentMovieYear = 0;
-
 var gameStarted= false;
-
 var guessedAlready = false;
 var bonusAlready = false;
-
 var gameWon = false;
-
 var socket = io();
-
 var playerInfo = null;
 
 class apiFetch {
@@ -110,7 +104,6 @@ function selectMovie() {
 
 function startingCard() {
     if(gameStarted== false) {
-        console.log(true);
         const tmp = Math.random()*movies.length;
         const rand = Math.floor(tmp);
 
@@ -119,10 +112,10 @@ function startingCard() {
 
         const orig = document.createElement("div");
         orig.className = "timeline-item";
-        orig.id = timelineInputOrder;
+        orig.id = timelineID;
         
         orig.innerHTML = `
-            <div class="select" onclick="guessPos(${date},1,${timelineInputOrder})">
+            <div class="select" onclick="guessPos(${date},1,${timelineID})">
                 <div class="poster-filler poster-filler-left" style="color:lightslategray"> ? </div>
                 <p style="color:lightslategray"> ???? </p>
             </div>
@@ -132,7 +125,7 @@ function startingCard() {
                 </div>
                 <p> ${date} </p>
             </div>
-            <div class="select" onclick="guessPos(${date},2, ${timelineInputOrder})">
+            <div class="select" onclick="guessPos(${date},2, ${timelineID})">
                 <div class="poster-filler" style="color:lightslategray"> ? </div>
                 <p style="color:lightslategray"> ???? </p>
             </div>
@@ -144,130 +137,6 @@ function startingCard() {
         movieRemove(rand);
     }
     
-}
-
-function guessPos(date, index, inputOrder) {
-    console.log(playerInfo.gameStatus)
-    if(guessedAlready === true) {
-        return;
-    }
-    else if(gameWon == false && playerInfo.currentPlayerTurn === playerInfo.playerNum && playerInfo.gameStatus == true) {
-        var currentMovieYear = currentMovie[4];
-        console.log(currentMovieYear)
-
-        const surroundMovie = document.getElementById(inputOrder);
-        const timeline = document.getElementById('timeline');
-
-        var timelineLength = timeline.childElementCount;
-
-        var childNodeNumber = Array.prototype.indexOf.call(timeline.children, surroundMovie);
-        childNodeNumber++;
-
-
-        var correct = null;
-
-        if(timelineLength > 1 && (childNodeNumber !=1 || index == 2) && (childNodeNumber != timelineLength || index == 1)) {
-            if(index == 1) {
-                var childAdjacentNumber = childNodeNumber-1;
-                var childAdjacentMovie = timeline.childNodes[childAdjacentNumber].childNodes[1];
-                var adjacentDate = Number(childAdjacentMovie.outerHTML.split("\"")[3].split("(")[1].split(",")[0]);
-            }
-            else if(index == 2) {
-                var childAdjacentNumber = childNodeNumber+1;
-                var childAdjacentMovie = timeline.childNodes[childAdjacentNumber].childNodes[1];
-                var adjacentDate = Number(childAdjacentMovie.outerHTML.split("\"")[3].split("(")[1].split(",")[0]);
-            }
-        }
-        if(currentMovieYear != 0) {
-            if(index == 1 && date >= currentMovieYear && (!adjacentDate || currentMovieYear <= adjacentDate)) {
-                timelineInputOrder++;
-
-                const newMovie = document.createElement("div");
-                newMovie.className = "timeline-item";
-                newMovie.id = timelineInputOrder;
-
-                newMovie.innerHTML = `
-                    <div class="select" onclick="guessPos(${currentMovieYear},1,${timelineInputOrder})">
-                        <div class="poster-filler poster-filler-left" style="color:lightslategray"> ? </div>
-                        <p style="color:lightslategray"> ???? </p>
-                    </div>
-                    <div class="movie-item">
-                        <div class="poster">
-                            <img src="https://image.tmdb.org/t/p/w500/${currentMovie[2]}">
-                        </div>
-                        <p> ${currentMovieYear} </p>
-                    </div>
-                    <div class="select" onclick="guessPos(${currentMovieYear},2, ${timelineInputOrder})">
-                        <div class="poster-filler" style="color:lightslategray"> ? </div>
-                        <p style="color:lightslategray"> ???? </p>
-                    </div>
-                `;
-
-                document.getElementById("timeline").insertBefore(newMovie, document.getElementById("timeline").childNodes[childNodeNumber-1]);
-                
-                sendChatInfo('correctPlacement', currentMovie);
-                if(timelineLength == 9) {
-                    sendChatInfo('win');
-                    sendServerChatInfo('win', null);
-                    gameWon = true;
-                }
-                guessedAlready = false;
-                correct = 'correctMovie';
-            }
-            else if(index == 2 && date <= currentMovieYear && (!adjacentDate|| adjacentDate <= currentMovieYear )) {
-                timelineInputOrder++;
-
-                const newMovie = document.createElement("div");
-                newMovie.className = "timeline-item";
-                newMovie.id = timelineInputOrder;
-
-                newMovie.innerHTML = `
-                    <div class="select" onclick="guessPos(${currentMovieYear},1, ${timelineInputOrder})">
-                        <div class="poster-filler poster-filler-left" style="color:lightslategray"> ? </div>
-                        <p style="color:lightslategray"> ???? </p>
-                    </div>
-                    <div class="movie-item">
-                        <div class="poster">
-                            <img src="https://image.tmdb.org/t/p/w500/${currentMovie[2]}">
-                        </div>
-                        <p> ${currentMovieYear} </p>
-                    </div>
-                    <div class="select" onclick="guessPos(${currentMovieYear},2, ${timelineInputOrder})">
-                        <div class="poster-filler" style="color:lightslategray"> ? </div>
-                        <p style="color:lightslategray"> ???? </p>
-                    </div>
-                `;
-                document.getElementById("timeline").insertBefore(newMovie, document.getElementById("timeline").childNodes[childNodeNumber]);
-
-                sendChatInfo('correctPlacement', currentMovie);
-                if(timelineLength == 9) {
-                    sendChatInfo('win');
-                    sendServerChatInfo('win', null);
-                    gameWon = true;
-                }
-                guessedAlready = false;
-                correct = 'correctMovie';
-
-            } 
-            else {
-                sendChatInfo('incorrectPlacement', currentMovie);
-                guessedAlready = true;
-                correct = 'notCorrectMovie'
-            }
-            bonusAlready = false;
-        }
-        else {
-            console.log("error")
-        }
-        var turn = updateCurrentTurn(playerInfo.currentPlayerTurn);
-        updatePlayerInfo({
-            turn:turn,
-            timelineLength:timelineLength,
-            timeline:timeline,
-        });
-        sendServerChatInfo(correct, currentMovie);
-        selectMovie();
-    }
 }
 
 document.getElementById("join-game").addEventListener("click", function() {
@@ -319,7 +188,7 @@ function sendChatInfo(phase, movie, playerNum) {
         chat.innerHTML = `Incorrect. The movie was <em>${movie[0]}</em>, ${movie[4]}.`;
     }
     if(phase === 'win') {
-        chat.innerHTML = `Congratulations! You placed 10 movies in the correct order. You won the game! Press the button to playen again: <button onclick=function"leaveGame"()> Play Again </button>`;
+        chat.innerHTML = `Congratulations! You placed 10 movies in the correct order. You won the game! Press the button to playen again: <button onclick="leaveGame()"> Play Again </button>`;
     }
     if(playerNum === 1) {
         chat.innerHTML = `You will go first, you are player one.`;
@@ -348,7 +217,7 @@ function displayServerInfo(data) {
         chat.innerHTML = `<b>${data.player.username}</b> guessed the incorrect spot for <em>${data.movie[0]}</em>, ${data.movie[4]}. It is now <b>${data.opponent.username}'s</b> turn. <b>${data.player.username}'s</b> timeline is ${data.player.timelineLength} long.`;
     }
     else if(data.phase === 'win') {
-        chat.innerHTML = `<b>${data.player.username}</b> placed 10 movies in order and won the game. Press the button to playen again: <button onclick=function"leaveGame"()> Play Again </button>`;
+        chat.innerHTML = `<b>${data.player.username}</b> placed 10 movies in order and won the game. Press the button to playen again: <button onclick="leaveGame()"> Play Again </button>`;
     }
     else if(data.phase === 'stealToken') {
         chat.innerHTML = `<b>${data.player.username}</b> guessed the title of <em>${data.movie[0]}</em> and gained a steal token.`;
@@ -476,4 +345,87 @@ function leaveGame() {
     document.getElementById('chat-form').innerHTML = `<div id="chat-text" style="width: 380px; height: 200px; overflow: auto; background-color: slategray;"> </div>`;
     document.getElementById('timeline').innerHTML = ``;
     gameStarted = false;
+}
+
+
+function guessPos(adjacentDateInput, index, inputOrder) {
+    if(guessedAlready === false && gameWon == false && playerInfo.currentPlayerTurn === playerInfo.playerNum && playerInfo.gameStatus == true) {
+        var guessDate = currentMovie[4];
+
+        const adjacentMovieInput = document.getElementById(inputOrder);
+        const timeline = document.getElementById('timeline');
+        var timelineLength = timeline.childElementCount;
+
+        var timelinePosition = Number(Array.prototype.indexOf.call(timeline.children, adjacentMovieInput)) + 1;
+
+        var correct = null;
+        var timelineYearsOrder = [];
+        
+        if(timelineLength > 1 && (timelinePosition !=1 || index == 2) && (timelinePosition != timelineLength || index == 1)) {
+            for(var i = 0; i<timeline.children.length;i++) {
+                timelineYearsOrder[i] = Number(timeline.children[i].childNodes[1].outerHTML.split("\"")[3].split("(")[1].split(",")[0])
+            }
+            if(index == 1) {
+                var adjacentDateOther = timelineYearsOrder[timelinePosition-2];
+            }
+            else if(index == 2) {
+                var adjacentDateOther = timelineYearsOrder[timelinePosition+2];
+            }
+        }
+
+        if((index === 1 && adjacentDateInput >= guessDate && (!adjacentDateOther || adjacentDateOther <= guessDate)) || (index === 2 && adjacentDateInput <= guessDate && (!adjacentDateOther || adjacentDateOther >= guessDate))) {
+            timelineID++;
+
+            const newMovie = document.createElement("div");
+            newMovie.className = "timeline-item";
+            newMovie.id = timelineID;
+
+            newMovie.innerHTML = `
+                <div class="select" onclick="guessPos(${guessDate},1,${timelineID})">
+                    <div class="poster-filler poster-filler-left" style="color:lightslategray"> ? </div>
+                    <p style="color:lightslategray"> ???? </p>
+                </div>
+                <div class="movie-item">
+                    <div class="poster">
+                        <img src="https://image.tmdb.org/t/p/w500/${currentMovie[2]}">
+                    </div>
+                    <p> ${guessDate} </p>
+                </div>
+                <div class="select" onclick="guessPos(${guessDate},2,${timelineID})">
+                    <div class="poster-filler" style="color:lightslategray"> ? </div>
+                    <p style="color:lightslategray"> ???? </p>
+                </div>
+            `;
+            if(index === 1) {
+                document.getElementById("timeline").insertBefore(newMovie, document.getElementById("timeline").childNodes[timelinePosition-1]);
+            }
+            else if(index === 2) {
+                document.getElementById("timeline").insertBefore(newMovie, document.getElementById("timeline").childNodes[timelinePosition]);
+
+            }
+            sendChatInfo('correctPlacement', currentMovie);
+            if(timelineLength == 9) {
+                sendChatInfo('win');
+                sendServerChatInfo('win', null);
+                gameWon = true;
+            }
+            guessedAlready = false;
+            correct = 'correctMovie';
+
+            timelineLength+=1;
+        }
+        else {
+            sendChatInfo('incorrectPlacement', currentMovie);
+            guessedAlready = true;
+            correct = 'notCorrectMovie'
+        }
+        var turn = updateCurrentTurn(playerInfo.currentPlayerTurn);
+        updatePlayerInfo({
+            turn:turn,
+            timelineLength:timelineLength,
+            timeline:timeline,
+        });
+        sendServerChatInfo(correct, currentMovie);
+        selectMovie();
+    }
 }
