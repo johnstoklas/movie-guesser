@@ -369,7 +369,7 @@ function guessPos(adjacentDateInput, index, inputOrder) {
                 var adjacentDateOther = timelineYearsOrder[timelinePosition-2];
             }
             else if(index == 2) {
-                var adjacentDateOther = timelineYearsOrder[timelinePosition+2];
+                var adjacentDateOther = timelineYearsOrder[timelinePosition];
             }
         }
 
