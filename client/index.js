@@ -1,5 +1,3 @@
-var apiKey = "3f540891f7b254dd92eaaa54c0895843";
-
 const movies = [];
 const moviesGuessList = [];
 var i = 0;
