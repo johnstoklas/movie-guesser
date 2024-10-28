@@ -1,4 +1,4 @@
-# Project Title
+# Movie Match-Up
 
 A multiplayer web-based game where two players face off to see who can get 10 movies in chronological release order based on movie frames. This game takes inspiration from the real-life card game Hitster. I wasn't doing very well in the game and I knew if the game involved movies I would be doing much better. Thus, Movie Match-Up was created.
 
