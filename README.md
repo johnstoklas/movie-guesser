@@ -12,4 +12,4 @@ A multiplayer web-based game where two players face off to see who can get 10 mo
 - **public**: Holds styling info
   - **style.css**: Has styling elements used in the website
 
-- **app.js**: Holds all the back end code, this code is used to send data from the client side to the server and then to their opponent. For example, if a player correctly places a movie in order it sends that data to their opponent and tells them how long their opponent's timeline is.
+- **`app.js`**: Holds all the back end code, this code is used to send data from the client side to the server and then to their opponent. For example, if a player correctly places a movie in order it sends that data to their opponent and tells them how long their opponent's timeline is.
